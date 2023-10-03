@@ -1,0 +1,407 @@
+/* From uiverse.io by @Mike11jr */
+
+.scene {
+    width: 15em;
+    justify-content: center;
+    align-items: center;
+}
+
+.cube {
+    color: #cccccc;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    transition: all 0.85s cubic-bezier(.17, .67, .14, .93);
+    transform-style: preserve-3d;
+    transform-origin: 100% 50%;
+    width: 15em;
+    height: 4em;
+}
+
+.cube:hover {
+    transform: rotateX(-90deg);
+}
+
+.sidetop {
+    box-sizing: border-box;
+    position: absolute;
+    display: inline-block;
+    height: 4em;
+    width: 10em;
+    text-align: center;
+    text-transform: uppercase;
+    padding-top: 0.5em;
+    font-weight: bold;
+}
+
+.side {
+    box-sizing: border-box;
+    position: absolute;
+    display: inline-block;
+    height: 4em;
+    width: 10em;
+    text-align: center;
+    text-transform: uppercase;
+    padding-top: 1.5em;
+    font-weight: bold;
+}
+
+.top {
+    background: #f8f673;
+    color: #222229;
+    transform: rotateX(90deg) translate3d(0, 0, 2em);
+    box-shadow: inset 0 0 0 5px #949494;
+}
+
+.frontIs1 {
+    background: #4ff5b0;
+    color: rgb(0, 0, 0);
+    box-shadow: inset 0 0 0 5px #949494;
+    transform: translate3d(0, 0, 2em);
+}
+
+
+/* dropdown button */
+
+.mainmenubtn {
+    background-color: skyblue;
+    color: #000000;
+    border: none;
+    cursor: pointer;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.mainmenubtn:hover {
+    background-color: blue;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-child {
+    display: none;
+    background-color: skyblue;
+    min-width: 200px;
+}
+
+.dropdown-child a {
+    color: blue;
+    padding: 20px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown:hover .dropdown-child {
+    display: block;
+}
+
+
+/* Flip drop button */
+
+.BtnIs1 {
+    display: block;
+    width: 166px;
+    height: 38px;
+    margin: auto;
+    text-align: center;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+}
+
+.BtnIs1 .frontIs1,
+.BtnIs1 .backIs1 {
+    position: absolute;
+    display: block;
+    width: 166px;
+    height: 38px;
+    border: 0.01px solid #5c5c5c;
+    line-height: 40px;
+    transition: all .5s;
+    -webkit-transition: -webkit-transform .5s;
+    -moz-transition: -moz-transform .5s;
+    color: #000000;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.BtnIs1 .frontIs1 {
+    background-color: #0dcaf0;
+    transform: translateZ(19px);
+    -webkit-transform: translateZ(19px);
+    -moz-transform: translateZ(19px);
+}
+
+.BtnIs1 .backIs1 {
+    background-color: #4c4c4d;
+    color: #fff;
+    transform: rotateX(-90deg) translateZ(19px);
+    -webkit-transform: rotateX(-90deg) translateZ(19px);
+    -moz-transform: rotateX(-90deg) translateZ(19px);
+}
+
+.BtnIs1:hover {
+    transform: rotateX(90deg);
+    -webkit-transform: rotateX(90deg);
+    -moz-transform: rotateX(90deg);
+}
+
+
+/* <a href="#" class="BtnIs1" data-bs-toggle="modal" data-bs-target="#manageMenuModal">
+	<span class="backIs1"><i class="bi bi-plus-square"></i> Tambah Menu</span>
+	<span class="frontIs1"><i class="bi bi-plus-square"></i> Tambah Menu</span>
+</a> */
+
+
+/* /Flip drop button */
+
+
+/* Plus */
+
+.actionBtn21 {
+    display: inline-block;
+    position: relative;
+    margin: auto;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.actionBtn21:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.actionBtn21 .ico-plus2 {
+    display: block;
+    position: relative;
+    float: left;
+    width: 33px;
+    height: 33px;
+    margin-right: 8px;
+    border: 1px solid #435ebe;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    transition: background .3s ease-in-out, transform .3s ease-in-out;
+    -webkit-transition: background .3s ease-in-out, transform .3s ease-in-out;
+    -moz-transition: background .3s ease-in-out, transform .3s ease-in-out;
+}
+
+.actionBtn21:hover .ico-plus2 {
+    background: #435ebe;
+    transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+}
+
+.actionBtn21:hover .ico-plus2 span {
+    background: #fff;
+}
+
+.actionBtn21 .ico-plus2 span {
+    display: block;
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    margin-top: -1px;
+    width: 15px;
+    height: 1px;
+    background: #435ebe;
+    transition: background .3s ease-in-out;
+    -webkit-transition: background .3s ease-in-out;
+    -moz-transition: background .3s ease-in-out;
+}
+
+.actionBtn21 .ico-plus2 span:first-child {
+    transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+}
+
+.actionBtn21 .lb {
+    display: block;
+    position: relative;
+    float: left;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #031555;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.actionBtn21 .lb::after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 1px;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background: #435ebe;
+    transform: scaleX(0);
+    -webkit-transform: scaleX(0);
+    -moz-transform: scaleX(0);
+    -ms-transform: scaleX(0);
+    transform-origin: left;
+    -webkit-transform-origin: left;
+    -moz-transform-origin: left;
+    transition: transform .3s ease-in-out;
+    -webkit-transition: transform .3s ease-in-out;
+    -moz-transition: transform .3s ease-in-out;
+}
+
+.actionBtn21:hover .lb::after {
+    transform: scaleX(1);
+    -webkit-transform: scaleX(1);
+    -moz-transform: scaleX(1);
+}
+
+
+/* <a href="javascript:;" class="code_view actionBtn21">
+	<i class="ico-plus2">
+	<span></span>
+	<span></span>
+	</i>
+	<span class="lb">PREVIEW</span>
+</a> */
+
+
+/* /Plus */
+
+
+/* Slide Button */
+
+.BtnSlideIs {
+    overflow: hidden;
+    display: inline-block;
+    position: relative;
+    height: 40px;
+    padding-left: 10px;
+    padding-right: 40px;
+    background-color: #435ebe;
+    line-height: 40px;
+    color: #d2d2d2;
+    text-align: center;
+    text-transform: uppercase;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    font-size: 15px;
+    font-family: 'Montserrat', sans-serif;
+    text-decoration: none;
+    text-transform: none;
+    box-shadow: 0px 0px 0px 3px rgba(0, 0, 0, .2);
+    -webkit-box-shadow: 0px 0px 0px 3px rgba(0, 0, 0, .2);
+    -moz-box-shadow: 0px 0px 0px 3px rgba(0, 0, 0, .2);
+    transition: all .6s;
+    -webkit-transition: all .6s;
+    -moz-transition: all .6s;
+}
+
+.BtnSlideIs .txtIs {
+    display: block;
+    padding: 0 20px 0 10px;
+    border-right: 1px solid #708aeb;
+    white-space: nowrap;
+    transition: color .5s;
+    -webkit-transition: color .5s;
+    -moz-transition: color .5s;
+}
+
+.BtnSlideIs .btn_icoIs {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    border-left: 1px solid #50504a;
+}
+
+.BtnSlideIs .btn_icoIs span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding-top: 15px;
+    box-sizing: border-box;
+    transform: rotateY(0deg);
+    -webkit-transform: rotateY(0deg);
+    -moz-transform: rotateY(0deg);
+    transition: transform .5s ease-out .5s;
+    -webkit-transition: transform .5s ease-out .5s;
+    -moz-transition: transform .5s ease-out .5s;
+}
+
+.BtnSlideIs .btn_icoIs span img {
+    vertical-align: top;
+    opacity: .5;
+    transition: all .2s ease-out .3s;
+    -webkit-transition: all .2s ease-out .3s;
+    -moz-transition: all .2s ease-out .3s;
+}
+
+.BtnSlideIs .txtIs_slide {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 41px;
+    width: 0;
+    height: 100%;
+    background-color: #6680db;
+    color: #ffdd1a;
+    text-align: left;
+    text-indent: 10px;
+    white-space: nowrap;
+    box-shadow: 1px 0px 6px rgba(100, 100, 238, 0.5) inset, -1px 0px 6px rgba(132, 132, 241, 0.5) inset;
+    -webkit-box-shadow: 1px 0px 6px rgba(144, 144, 238, 0.5) inset, -1px 0px 6px rgba(114, 114, 233, 0.5) inset;
+    -moz-box-shadow: 1px 0px 6px rgba(132, 132, 243, 0.5) inset, -1px 0px 6px rgba(130, 130, 235, 0.5) inset;
+    transition: width .6s;
+    -webkit-transition: width .6s;
+    -moz-transition: width .6s;
+}
+
+.BtnSlideIs:hover {
+    padding-right: 141px;
+}
+
+.BtnSlideIs:hover .txtIs {
+    color: #ffd700;
+}
+
+.BtnSlideIs:hover .txtIs_slide {
+    width: 100px;
+}
+
+.BtnSlideIs:hover .btn_icoIs span {
+    transform: rotateY(180deg);
+    -webkit-transform: -webkit-rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+}
+
+.BtnSlideIs:hover .btn_icoIs span img {
+    opacity: 1;
+}
+
+
+/* <a href="javascript:;" class="code_view BtnSlideIs">
+	<span class="txtIs">slide</span>
+	<span class="txtIs_slide">text</span>
+	<span class="btn_icoIs">	
+	<span>
+		<img src="http://css3studio.com/images/effect_ex/ico_play_2.png" alt="" />
+	</span>
+	</span>
+</a> */
+
+
+/* /Slide Button */
