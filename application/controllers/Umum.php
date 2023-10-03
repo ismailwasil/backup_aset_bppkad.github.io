@@ -23,9 +23,6 @@ class Umum extends CI_Controller
         $this->load->view('templates/navbar', $data);
         $this->load->view('templates/pages/lasada/lasada2', $data);
         $this->load->view('templates/page_footer');
-      
-      
-      
     }
     public function lasada()
     {
@@ -35,6 +32,17 @@ class Umum extends CI_Controller
         $this->load->view('templates/menu/sidebar-menu');
         $this->load->view('templates/navbar', $data);
         $this->load->view('templates/pages/lasada/lasada2', $data);
+        $this->load->view('templates/page_footer');
+    }
+
+    public function sewa()
+    {
+        $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['title'] = "Lasada";
+        $this->load->view('templates/page_header', $data);
+        $this->load->view('templates/menu/sidebar-menu');
+        $this->load->view('templates/navbar', $data);
+        $this->load->view('templates/pages/lasada/sewa', $data);
         $this->load->view('templates/page_footer');
     }
 

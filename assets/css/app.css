@@ -173,20 +173,20 @@
 
 .flip-card-front-1 {
     box-shadow: 0.2em 0.2em #dbdbdb;
-    background-color: #3b5ab6;
-    background-image: linear-gradient(#3b5ab6, #6783d6, #3b5ab6);
+    background-color: #203e97;
+    background-image: linear-gradient(#203e97, #3b5dc0, #203e97);
 }
 
 .flip-card-front-2 {
     box-shadow: 0.2em 0.2em #dbdbdb;
     background-color: #703bb6;
-    background-image: linear-gradient(#703bb6, #a66ef0, #703bb6);
+    background-image: linear-gradient(#703bb6, #a669f5, #703bb6);
 }
 
 .flip-card-front-3 {
     box-shadow: 0.2em 0.2em #dbdbdb;
     background-color: #851046;
-    background-image: linear-gradient(#851046, #db3c86, #851046);
+    background-image: linear-gradient(#851046, #c93178, #851046);
 }
 
 .flip-card-back {

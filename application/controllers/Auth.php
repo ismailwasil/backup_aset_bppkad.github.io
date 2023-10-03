@@ -33,7 +33,7 @@ class Auth extends CI_Controller
         }
     }
 
-    public function lasada()
+    public function sewa()
     {
         $id_role = $this->session->userdata('id_role');
 
@@ -44,15 +44,15 @@ class Auth extends CI_Controller
             ];
             $this->session->set_userdata($data);
 
-            redirect('umum/lasada');
+            redirect('umum/sewa');
         } elseif ($id_role == 1) {
-            redirect('admin/lasada');
+            redirect('admin/sewa');
         } elseif ($id_role == 4) {
-            redirect('developer/lasada');
+            redirect('developer/sewa');
         } elseif ($id_role == 2) {
-            redirect('user/lasada');
+            redirect('user/sewa');
         } elseif ($id_role == 3) {
-            redirect('umum/lasada');
+            redirect('umum/sewa');
         }
     }
 
@@ -224,7 +224,7 @@ class Auth extends CI_Controller
                                 </script>';
                     $this->session->set_flashdata('message', $swaldash);
                     if ($user['id_role'] == 1) {
-                        redirect('admin/admin_lasada');
+                        redirect('admin/admin_sewa');
                     } elseif ($user['id_role'] == 4) {
                         redirect('developer');
                     } else {

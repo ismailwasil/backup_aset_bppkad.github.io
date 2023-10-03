@@ -247,13 +247,13 @@ class Lasada extends CI_Controller
 
                 $id_role = $this->session->userdata('id_role');
                 if ($id_role == 1) {
-                    redirect('admin/lasada');
+                    redirect('admin/sewa');
                 } elseif ($id_role == 4) {
-                    redirect('developer/lasada');
+                    redirect('developer/sewa');
                 } elseif ($id_role == 2) {
-                    redirect('user/lasada');
+                    redirect('user/sewa');
                 } elseif ($id_role == 3) {
-                    redirect('umum/lasada');
+                    redirect('umum/sewa');
                 }
             } else {
                 $pesanError = $this->upload->display_errors();

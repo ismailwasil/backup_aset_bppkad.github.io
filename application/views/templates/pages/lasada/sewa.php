@@ -19,8 +19,8 @@
 <div class="container-fluid">
     <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
         <div class="col-md-6 p-5 mt-lg-5">
-            <img src="<?= base_url('assets/'); ?>images/logo/Lasada BPPKAD.png" alt="Lasada BPPKAD" class="responsive" height="90"> <br>
-            <h3 class="animated fadeIn mb-4">Find A <span style="color: #00B98E;">Perfect Asset</span> To Enjoy With Your Lovely Person</h3>
+            <h1>Layanan Sewa BMD</h1>
+            <h4 class="animated fadeIn mb-4">Find A <span style="color: #00B98E;">Perfect Asset</span> To Enjoy With Your Lovely Person</h4>
             <!-- <p class=" animated fadeIn mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea elitr.</p> -->
             <a href="#listAset" class="btn btn-primary py-3 px-5 me-3 animated fadeIn"><i class="bi bi-chevron-double-down"></i> Daftar Aset</a>
         </div>

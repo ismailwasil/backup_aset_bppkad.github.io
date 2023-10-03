@@ -26,7 +26,7 @@
                     color: #25396f;
                 }
             </style>
-            <a href="<?= base_url('auth/lasada') ?>" class="btn back">
+            <a href="<?= base_url('auth/sewa') ?>" class="btn back">
                 <i class="fa fa-fw fa-lg fa-arrow-left"></i>
             </a> Details
         </h3>
