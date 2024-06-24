@@ -36,7 +36,7 @@
                     <div class="card-content">
                         <div class="card-body">
                             <?php $idEditSPM = $spm_masuk['id_masuk_spm'] ?>
-                            <form class="form form-vertical" id="editSPMmasuk" action="<?= base_url('auth/edit_spm_aju/') . $idEditSPM ?>" method="post">
+                            <form class="form form-vertical" id="editSPMmasuk" action="<?= base_url('AUTH/edit_spm_aju/') . $idEditSPM ?>" method="post" enctype="multipart/form-data">
                                 <div class="form-body">
                                     <div class="row">
                                         <div class="col-12">
@@ -66,12 +66,10 @@
                                                 <label for="jenis">Jenis</label>
                                                 <div class="position-relative">
                                                     <select class="form-control form-select" id="jenis" name="jenis" required>
-                                                        <option disabled value="">--Pilih Jenis
-                                                            SPM--</option>
-                                                        <option <?= $spm_masuk['jenis'] == "BELANJA MODAL SEMESTER I/II" ? "selected" : null ?> value="BELANJA MODAL SEMESTER I/II">
-                                                            BELANJA MODAL SEMESTER I/II</option>
-                                                        <option <?= $spm_masuk['jenis'] == "BUKU PERSEDIAAN" ? "selected" : null ?> value="BUKU PERSEDIAAN">BUKU PERSEDIAAN</option>
-                                                        <option <?= $spm_masuk['jenis'] == "BUKAN BELANJA MODAL/PERSEDIAAN" ? "selected" : null ?> value="BUKAN BELANJA MODAL/PERSEDIAAN">BUKAN BELANJA MODAL/PERSEDIAAN</option>
+                                                        <option disabled value="">--Pilih Jenis SPM--</option>
+                                                        <option class="bg-light-warning" <?= $spm_masuk['jenis'] == "BELANJA MODAL" ? "selected" : null ?> value="BELANJA MODAL">BELANJA MODAL</option>
+                                                        <option class="bg-light-success" <?= $spm_masuk['jenis'] == "BELANJA PERSEDIAAN" ? "selected" : null ?> value="BELANJA PERSEDIAAN">BELANJA PERSEDIAAN</option>
+                                                        <option class="bg-light-danger" <?= $spm_masuk['jenis'] == "BUKAN BELANJA MODAL/PERSEDIAAN" ? "selected" : null ?> value="BUKAN BELANJA MODAL/PERSEDIAAN">BUKAN BELANJA MODAL/PERSEDIAAN</option>
                                                     </select>
                                                     <div class="form-control-icon">
                                                         <i class="bi bi-bookmark-check"></i>
@@ -89,11 +87,15 @@
                                                     </div>
                                                 </div>
                                                 <small style="color: orangered;">Jika ada perubahan lembar SPM, bisa diupload ulang. Jika tidak ada, dikosongi saja</small>
+                                                <div class="alert alert-danger alert-dismissible show fade" id="pesan_error">
+                                                    Nama file tidak valid. Hanya huruf, angka, dan garis bawah (_) yang diperbolehkan.
+                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div class="col-12 d-flex justify-content-end">
-                                            <button type="submit" class="btn btn-update btn-primary ml-1" id="add_spm"><i class="fa fa-fw fa-level-up"></i> Update</button>
+                                            <button type="submit" class="btn btn-update btn-edit-ismail ml-1" id="add_spm"><i class="fa fa-fw fa-level-up"></i> Update & Ajukan Ulang</button>
                                             <button class="btn-loading btn btn-light-danger d-none" type="button" disabled>
                                                 <img src="<?= base_url('assets/') ?>vendors/svg-loaders/audio.svg" class="me-4" style="width: 1.1rem" alt="audio">
                                                 <span>Sedang Mengirim...</span>
@@ -101,6 +103,50 @@
                                         </div>
                                     </div>
                                 </div>
+                                <script>
+                                    var pesan = document.getElementById("pesan_error");
+                                    window.onload = function() {
+                                        // Jalankan JavaScript Anda di sini
+                                        pesan.style.display = "none";
+                                    };
+                                    // Fungsi untuk memeriksa apakah nama file valid
+                                    function isValidFilename(filename) {
+                                        // Definisikan pola regex untuk karakter yang diperbolehkan
+                                        var allowedCharacters = /^[a-zA-Z0-9_.\- ]*$/;
+                                        // Lakukan pengecekan dengan ekspresi reguler
+                                        return allowedCharacters.test(filename);
+                                    }
+
+                                    // Fungsi yang dipanggil ketika input file berubah
+                                    function handleFileInputChange(event) {
+                                        // var pesan = document.getElementById("pesan_error");
+                                        var btnAjukan = document.getElementById("add_spm")
+                                        var input = event.target;
+                                        var files = input.files;
+
+                                        // Jika ada file yang dipilih
+                                        if (files.length > 0) {
+                                            // Periksa nama file
+                                            var filename = files[0].name;
+                                            if (!isValidFilename(filename)) {
+                                                // Jika nama file tidak valid, tampilkan pesan dan kosongkan input file
+                                                btnAjukan.disabled = true;
+                                                pesan.style.display = "block";
+                                                pesan.innerHTML = "Nama file tidak valid. Hanya angka, huruf, underscore (_), titik (.), dan dash (-) yang diperbolehkan.";
+                                                input.value = ''; // Kosongkan input file
+                                            } else {
+                                                btnAjukan.disabled = false;
+                                                pesan.style.display = "none";
+                                            }
+                                        }
+                                    }
+
+                                    // Mendapatkan referensi ke elemen input file
+                                    var fileInput = document.getElementById('dokumenEdit');
+
+                                    // Menambahkan event listener untuk perubahan pada input file
+                                    fileInput.addEventListener('change', handleFileInputChange);
+                                </script>
                             </form>
                         </div>
                     </div>

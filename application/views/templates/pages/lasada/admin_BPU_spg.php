@@ -221,9 +221,27 @@
                                             <span class="badge <?= $sw['kelas_status'] ?>" style="cursor: default;"><?= $sw['status_sewa'] ?></span>
                                         </td>
                                         <td class="text-center">
-                                            <button class="badge btn-success" id="viewSewa<?= $sw['id'] ?>"><i class="bi bi-check-circle"></i></button>
-                                            <button class="badge btn-edit-ismail" data-bs-toggle="modal" data-bs-target="#editSewa<?= $sw['id'] ?>"><i class="bi bi-pencil-square"></i></button>
-                                            <button class="badge btn-danger" data-bs-toggle="modal" data-bs-target="#tolakSewa<?= $sw['id'] ?>"><i class="bi bi-x-circle"></i></button>
+                                            <button title="Cek Sewa" class="badge btn-info" onclick="detailSewa<?= $sw['id'] ?>()"><i class="bi bi-info-circle"></i></button>
+                                            <script>
+                                                function detailSewa<?= $sw['id'] ?>() {
+                                                    let text = "Anda akan masuk ke detail sewa?\nid: <?= $sw['id'] ?>";
+                                                    if (confirm(text) == true) {
+                                                        <?php
+                                                        $id = $sw['id'];
+                                                        ?>
+                                                        window.location.href =
+                                                            "<?= base_url('admin/view_details_verif_sewa/' . $id); ?>";
+                                                    } else {
+                                                        Swal.fire({
+                                                            title: "Dibatalkan!",
+                                                            text: "Anda Batal Masuk",
+                                                            icon: "error",
+                                                            showConfirmButton: false,
+                                                            timer: 1500
+                                                        })
+                                                    }
+                                                }
+                                            </script>
                                         </td>
                                     </tr>
                                     <?php $i++; ?>
@@ -286,13 +304,48 @@
                                                     </div>
                                                     <div class="modal-body" style="color: #fcf57e;">
                                                         <div>
-                                                            Nama : <?= $swP['nama'] ?> <br>
-                                                            Aset Yang Disewa : <?= $swP['nm_aset'] ?> <br> <br>
+                                                            <div>
+                                                                Nama : <?= $swP['nama'] ?> <br>
+                                                                Aset Yang Disewa : <?= $swP['nm_aset'] ?><br>
+                                                                Kode Bayar : <?= $swP['kode_byr'] ?> <br>
+                                                                <a href="<?= base_url('assets/doc/LASADA/') . $swP['bukti_pengenal']; ?>" title="Dokumen" class="badge btn-info" target="popup" onclick="window.open('<?= base_url('assets/doc/LASADA/') . $swP['bukti_pengenal']; ?>','popup','width=600,height=600'); return false;">
+                                                                    <i class="fa fa-fw fa-file-text-o"></i>
+                                                                </a>
+                                                                <a title="Bukti Bayar" href="<?= base_url('assets/doc/LASADA/') . $swP['bukti_byr']; ?>" class="badge bg-success" target="popup" onclick="window.open('<?= base_url('assets/doc/LASADA/') . $swP['bukti_byr']; ?>','popup','width=600,height=600'); return false;">
+                                                                    <i class="fa fa-fw fa-money"></i>
+                                                                </a>
+                                                            </div>
                                                             <div class="text-center">
                                                                 <span style="color: white;">status sewa:</span>
-                                                                <h4><?= $swP['status_sewa'] ?></h4>
+                                                                <h4><?= $swP['status_sewa'] ?> & lunas</h4>
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <?php
+                                                        $idSewaHapus = $swP['id'];
+                                                        ?>
+                                                        <button class="badge btn-danger" onclick="hapusSewa<?= $idSewaHapus ?>()"><i class="fa fa-trash"></i> Hapus Sewa</button>
+                                                        <script>
+                                                            function hapusSewa<?= $idSewaHapus ?>() {
+                                                                let text = "Anda Yakin Menghapus Sewa ini?\n<?= $idSewaHapus ?>";
+                                                                if (confirm(text) == true) {
+                                                                    <?php
+                                                                    $id_lasada = $swP['id'];
+                                                                    ?>
+                                                                    window.location.href =
+                                                                        "<?= base_url('admin/hapus_lasada/' . $id_lasada); ?>";
+                                                                } else {
+                                                                    Swal.fire({
+                                                                        title: "Dibatalkan!",
+                                                                        text: "Sewa batal dihapus",
+                                                                        icon: "error",
+                                                                        showConfirmButton: false,
+                                                                        timer: 1500
+                                                                    })
+                                                                }
+                                                            }
+                                                        </script>
                                                     </div>
                                                 </div>
                                             </div>

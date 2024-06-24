@@ -64,6 +64,7 @@
                                                 <tr>
                                                     <th class="text-center">#</th>
                                                     <th>NAMA</th>
+                                                    <th class="text-center">ID</th>
                                                     <th class="text-center">USERNAME</th>
                                                     <th class="text-center">ROLE</th>
                                                     <th class="text-center">STATUS</th>
@@ -74,6 +75,7 @@
                                                 <tr>
                                                     <th class="text-center">#</th>
                                                     <th>NAMA</th>
+                                                    <th class="text-center">ID</th>
                                                     <th class="text-center">USERNAME</th>
                                                     <th class="text-center">ROLE</th>
                                                     <th class="text-center">STATUS</th>
@@ -88,6 +90,7 @@
                                                     <tr>
                                                         <td class="text-center"><?= $i; ?></td>
                                                         <td class=""><?= $ulist['name']; ?></td>
+                                                        <td class="text-center"><?= $ulist['id_user']; ?></td>
                                                         <td class="text-center"><?= $ulist['username']; ?></td>
                                                         <td class="text-center"><?= $ulist['role']; ?></td>
                                                         <td class="text-center">

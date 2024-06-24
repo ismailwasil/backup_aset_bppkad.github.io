@@ -26,7 +26,7 @@
                     color: #25396f;
                 }
             </style>
-            <a href="<?= base_url('auth/sewa') ?>" class="btn back">
+            <a href="<?= base_url('auth/lasada') ?>" class="btn back">
                 <i class="fa fa-fw fa-lg fa-arrow-left"></i>
             </a> Details
         </h3>
@@ -67,17 +67,47 @@
         </div>
 
         <div class="col-md-6 p-5 mt-lg-5">
-            <h1 class="mb-4">#1 BPU Kab. Sampang</h1>
-            <h5 class="mb-3"><i class="fa fa-fw fa-money"></i> Rp 3.000.000 <small style="color: red; font-size: smaller;">(Belum termasuk biaya petugas gedung)</small></h5>
-            <p class="mb-4">Gedung BPU Sampang berkantor pusat di Jawa Timur. <br> <?= 'Coba' . ' ' . 'Lagi'; ?></p>
+            <h1 class="mb-4">#1 BPU Kab. Sampang <span style="color: red; font-size: small;">* Gambar hanya ilustrasi</span></h1>
+            <h5 class="mb-3"><i class="fa fa-fw fa-money"></i> Rp 4.000.000 <small style="color: red; font-size: small;">(Belum termasuk biaya pengamanan Dishub)</small></h5>
+            <p class="mb-4">Gedung BPU Sampang berkantor pusat di Jawa Timur.</p>
             <table class="table-responsive" style="width:100%">
+                <tr>
+                    <th><i class="fa fa-check text-primary me-3"></i>Kapasitas Gedung</th>
+                    <th>:</th>
+                    <td>&plusmn; 700 Orang</td>
+                </tr>
                 <tr>
                     <th><i class="fa fa-check text-primary me-3"></i>Kursi</th>
                     <th>:</th>
-                    <td>400 buah <span style="color: red;">*</span></td>
+                    <td>400 Unit <span style="color: red;">*</span></td>
+                </tr>
+                <tr>
+                    <th><i class="fa fa-check text-primary me-3"></i>Meja Panjang</th>
+                    <th>:</th>
+                    <td>8 Unit <span style="color: red;">*</span></td>
+                </tr>
+                <tr>
+                    <th><i class="fa fa-check text-primary me-3"></i>AC Standing</th>
+                    <th>:</th>
+                    <td>7 Unit</td>
+                </tr>
+                <tr>
+                    <th><i class="fa fa-check text-primary me-3"></i>AC Split</th>
+                    <th>:</th>
+                    <td>2 Unit (1 &ndash; 0.5 PK)</td>
+                </tr>
+                <tr>
+                    <th><i class="fa fa-check text-primary me-3"></i>Kipas Angin</th>
+                    <th>:</th>
+                    <td>Atas 3 , Bawah 4, Belakang 2, Depan 2</td>
                 </tr>
                 <tr>
                     <th><i class="fa fa-check text-primary me-3"></i>Sound System</th>
+                    <th>:</th>
+                    <td>ready</td>
+                </tr>
+                <tr>
+                    <th><i class="fa fa-check text-primary me-3"></i>Genset</th>
                     <th>:</th>
                     <td>ready</td>
                 </tr>
@@ -87,7 +117,7 @@
                     <td>ready</td>
                 </tr>
             </table>
-            <small style="color: red;"><strong>NB</strong> : Jika ada penambahan jumlah kursi dari luar gedung, biaya sewa kursi ditanggung pihak penyewa</small>
+            <small style="color: red;"><strong>NB</strong> : Jika ada penambahan jumlah kursi dan meja dari luar gedung, biaya sewa kursi dan meja ditanggung pihak penyewa</small>
             </p>
             <p>
                 <i class="bi bi-geo-alt"></i> <a href="https://goo.gl/maps/HjuejFa29w1isA8N9"> Jl. Trunojoyo, Rw. V,</a> <br>Kel. Rong Tengah, Kec. Sampang, Sampang, Jawa Timur, Indonesia <i class="bi bi-mailbox"></i> 69216
@@ -364,6 +394,7 @@
                 <th class="text-center">ACARA</th>
                 <th class="text-center">WAKTU</th>
                 <th class="text-center">ALAMAT</th>
+                <th class="text-center">NO HP</th>
                 <th class="text-center">STATUS</th>
             </tr>
         </thead>
@@ -384,6 +415,7 @@
                     <td class="text-center"><?= $sw['keperluan'] ?></td>
                     <td class="text-center"><?= substr($sw['tgl_awal_acara'], 11, 5) . ' - ' . substr($sw['tgl_akhir_acara'], 11, 5) ?></td>
                     <td class="text-center"><?= $sw['alamat'] ?></td>
+                    <td class="text-center"><?= '0' . substr($sw['no_hp'], 2) ?></td>
                     <td class="text-center"><span class="badge <?= $sw['kelas_status'] ?>" style="cursor: default;"><?= $sw['status_sewa'] ?></span></td>
                 </tr>
                 <?php $i++; ?>

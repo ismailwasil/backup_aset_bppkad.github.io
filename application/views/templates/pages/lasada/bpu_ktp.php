@@ -26,7 +26,7 @@
                     color: #25396f;
                 }
             </style>
-            <a href="<?= base_url('auth/sewa') ?>" class="btn back">
+            <a href="<?= base_url('auth/lasada') ?>" class="btn back">
                 <i class="fa fa-fw fa-lg fa-arrow-left"></i>
             </a> Details
         </h3>
@@ -361,6 +361,7 @@
                 <th class="text-center">ACARA</th>
                 <th class="text-center">WAKTU</th>
                 <th class="text-center">ALAMAT</th>
+                <th class="text-center">NO HP</th>
                 <th class="text-center">STATUS</th>
             </tr>
         </thead>
@@ -381,6 +382,7 @@
                     <td class="text-center"><?= $sw['keperluan'] ?></td>
                     <td class="text-center"><?= substr($sw['tgl_awal_acara'], 11, 5) . ' - ' . substr($sw['tgl_akhir_acara'], 11, 5) ?></td>
                     <td class="text-center"><?= $sw['alamat'] ?></td>
+                    <td class="text-center"><?= '0' . substr($sw['no_hp'], 2) ?></td>
                     <td class="text-center"><span class="badge <?= $sw['kelas_status'] ?>" style="cursor: default;"><?= $sw['status_sewa'] ?></span></td>
                 </tr>
                 <?php $i++; ?>

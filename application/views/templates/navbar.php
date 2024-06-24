@@ -25,6 +25,7 @@
         }
     </style>
 
+    <!-- <audio class="d-none" id="notifSound" src="<?= base_url('assets/sounds/notif2.mp3') ?>"></audio> -->
 
     <nav class="navbar navbar-expand navbar-light float-end float-sm-end">
         <div class="container-fluid justify-content-end">
@@ -58,6 +59,85 @@
                         </div>
                     </a>
                 <?php else : ?>
+                    <?php if ($position['id_role'] == 1) : ?>
+                        <div>
+                            <?php
+                            $tahunSkr = date("Y");
+                            $queryRootNotif = "SELECT * FROM spm_masuk WHERE id_status=1 AND tgl_aju LIKE '$tahunSkr%'";
+                            $jumlah = $this->db->query($queryRootNotif)->num_rows();
+                            ?>
+                            <li class="nav-item dropdown me-3 notification-icon">
+                                <a class="nav-link active text-gray-600" href="#" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false"> <!-- class="dropdown-toggle " untuk drop toggle segitiga-->
+                                    <i class='fa fa-fw fa-bell-o fa-2x'></i>
+                                    <span class="badge-icon" id="bell">
+                                        <span id="notif"><?= $jumlah ?></span>
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-start notification-dropdown" aria-labelledby="dropdownMenuButton">
+                                    <li class="dropdown-header">
+                                        <h6>Notifications</h6>
+                                    </li>
+                                    <li class="dropdown-item notification-item">
+                                        <a class="d-flex align-items-center" href="verifikasi_spm">
+                                            <span id="notif_badge" class="badge rounded-pill bg-info">
+                                                <span id="notif-list"><?= $jumlah ?></span>
+                                            </span>&nbsp; SPM masuk
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </div>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                if (<?= $jumlah ?> == 0) {
+                                    document.getElementById('bell').classList.add("d-none");
+                                }
+                            })
+                        </script>
+                    <?php elseif ($position['id_role'] == 2) : ?>
+                        <div>
+                            <?php
+                            $tahunSkr = date("Y");
+                            $queryRootNotif = "SELECT * FROM spm_masuk WHERE id_status=? AND skpd=$IdUser AND tgl_aju LIKE '$tahunSkr%'";
+                            $jumlahproses = $this->db->query($queryRootNotif, array(1))->num_rows();
+                            $jumlahtolak = $this->db->query($queryRootNotif, array(2))->num_rows();
+                            ?>
+                            <li class="nav-item dropdown me-3 notification-icon">
+                                <a class="nav-link active text-gray-600" href="#" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false"> <!-- class="dropdown-toggle " untuk drop toggle segitiga-->
+                                    <i class='fa fa-fw fa-bell-o fa-2x'></i>
+                                    <span class="badge-icon" id="bell-user">
+                                        <span id="notif-user"><?= $jumlahproses + $jumlahtolak ?></span>
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-start notification-dropdown" aria-labelledby="dropdownMenuButton">
+                                    <li class="dropdown-header">
+                                        <h6>Notifications</h6>
+                                    </li>
+                                    <li class="dropdown-item notification-item">
+                                        <a class="d-flex align-items-center" href="pengajuan_spm">
+                                            <span id="notif_badge" class="badge rounded-pill bg-success">
+                                                <span id="notif-proses"><?= $jumlahproses ?></span>
+                                            </span>&nbsp; SPM diproses
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item notification-item">
+                                        <a class="d-flex align-items-center" href="pengajuan_spm">
+                                            <span id="notif_badge" class="badge rounded-pill bg-danger">
+                                                <span id="notif-tolak"><?= $jumlahtolak ?></span>
+                                            </span>&nbsp; SPM ditolak
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </div>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                if (<?= $jumlahproses + $jumlahtolak ?> == 0) {
+                                    document.getElementById('bell-user').classList.add("d-none");
+                                }
+                            })
+                        </script>
+                    <?php endif; ?>
                     <div class="dropdown">
                         <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="btn glow-on-hover row">
@@ -101,16 +181,8 @@
                                         cancelButtonColor: '#DD6B55',
                                     }).then(function(result) {
                                         if (result.value) {
-                                            Swal.fire({
-                                                title: "Success!",
-                                                text: "You logged out from the page",
-                                                icon: "success",
-                                                showConfirmButton: false,
-                                                timer: 1300
-                                            }).then(function(result) {
-                                                window.location.href =
-                                                    "<?= base_url('auth/logout'); ?>";
-                                            })
+                                            window.location.href =
+                                                "<?= base_url('auth/logout'); ?>";
                                         } else if (result.dismiss === "cancel") {
                                             Swal.fire({
                                                 title: "Cancelled!",
@@ -183,7 +255,7 @@
                         ?>
                         <p style="color: yellow;">Hubungi developer untuk ganti password 👉</p>
                         <a href="<?= $wadevelop ?>" class="btn btn-info" style="font-weight: bolder;" target="_blank">
-                            <i class="fa  fa-code"></i> Developer
+                            <i class="fa fa-fw fa-code"></i> Developer
                         </a>
                     </div>
                 </div>
@@ -219,5 +291,33 @@
             })
         </script>
     </nav>
+    <?php if ($position['id_role'] == 1) : ?>
+        <script>
+            // function playNotificationSound() {
+            //     var audio = document.getElementById("notifSound");
+            //     audio.play();
+            // }
+
+            <?php
+            $echonotif = base_url('auth/notif/');
+            ?>
+            var pathDocNotif = "<?= $echonotif ?>";
+        </script>
+        <script src="<?= base_url('assets/js/notif.js') ?>"></script>
+    <?php elseif ($position['id_role'] == 2) : ?>
+
+        <!-- Notif User -->
+        <script>
+            // function playNotificationSound() {
+            //     var audio = document.getElementById("notifSound");
+            //     audio.play();
+            // }
+            <?php
+            $echonotifUser = base_url('auth/notif_user/');
+            ?>
+            var pathDocNotifUser = "<?= $echonotifUser ?>";
+        </script>
+        <script src="<?= base_url('assets/js/notif-alter.js') ?>"></script>
+    <?php endif ?>
 
 </header>

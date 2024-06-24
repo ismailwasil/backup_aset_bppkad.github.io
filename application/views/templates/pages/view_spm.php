@@ -9,6 +9,27 @@
     <title>
         <?= $title; ?>
     </title>
+    <style>
+        @media print {
+
+            /* Atur ukuran kertas */
+            @page {
+                size: F4;
+                /* Separuh ukuran A4 */
+                margin: 5mm;
+                /* Hilangkan margin */
+            }
+
+            #page_SPM {
+                height: 140mm;
+                width: auto;
+            }
+
+            #qr_code {
+                width: 35mm;
+            }
+        }
+    </style>
 </head>
 
 <body id="page_SPM" onload="window.print();">
@@ -25,11 +46,11 @@
                     <th style="text-align: right; text-decoration: underline;" width="<?= $lebar; ?>%"><?= $SPM['reg'] . " / ASET / " . date('m / Y') ?></th>
                 </tr>
                 <tr style="padding: 5px;">
-                    <th style="text-align: center;" width="<?= $lebar; ?>%"><strong>PEMERINTAH KABUPATEN
+                    <th style="text-align: center;" width="<?= $lebar; ?>%"><strong class="strong">PEMERINTAH KABUPATEN
                             SAMPANG</strong></th>
                 </tr>
                 <tr style="padding: 5px;">
-                    <th style="text-align: center;" width="<?= $lebar; ?>%"><strong>BADAN PENDAPATAN, PENGELOLAAN
+                    <th style="text-align: center;" width="<?= $lebar; ?>%"><strong class="strong">BADAN PENDAPATAN, PENGELOLAAN
                             KEUANGAN DAN ASET DAERAH</strong></th>
                 </tr>
                 <tr style="padding: 5px;">
@@ -72,8 +93,8 @@
                         <th style="padding: 15px; text-align: left;" width="30%" colspan="2">Informasi Verifikasi
                             Berkas:</th>
                         <th style="text-align: center; border:3px solid black;" width="20%" rowspan="3">
-                            <!-- <img src="https://chart.googleapis.com/chart?cht=qr&chs=230x230&chl=<?= base_url('spm/index/' . $SPM['id']) ?>" title="Dokumen Verifikasi" /> -->
-                            <img id="qr_code" src="https://api.qrserver.com/v1/create-qr-code/?size=230x230&data=<?= base_url('spm/index/' . $SPM['id']) ?>" alt="QR Code <?= $SPM['id'] ?>" title="Dokumen Verifikasi" />
+                            <!-- <img src="https://chart.googleapis.com/chart?cht=qr&chs=230x230&chl=<?= base_url('SPM/index/' . $SPM['id']) ?>" title="Dokumen Verifikasi" /> -->
+                            <img id="qr_code" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=<?= base_url('SPM/index/' . $SPM['id_masuk_spm']) ?>" alt="QR Code <?= $SPM['id'] ?>" title="Dokumen Verifikasi" />
                         </th>
                     </tr>
                     <tr>
@@ -104,14 +125,14 @@
                     </tr>
                 </table>
             </font>
+            <?php
+            // Set the new timezone
+            date_default_timezone_set('Asia/Jakarta');
+            $date = date('l, d/m/y H:i:s');
+            ?>
+            <small style="float: left;">Versi_Barada_E_loaded_on: <i><?= $date; ?> </i>from <i>aset.sampangkab.go.id</i></small>
         </td>
     </table>
-    <?php
-    // Set the new timezone
-    date_default_timezone_set('Asia/Jakarta');
-    $date = date('l,d/m/y H:i:s');
-    ?>
-    <small>Versi_Barada_E_loaded_on: <i><?= $date; ?></i></small>
 </body>
 
 </html>

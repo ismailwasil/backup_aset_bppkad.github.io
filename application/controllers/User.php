@@ -66,10 +66,10 @@ class User extends CI_Controller
         $this->load->view('templates/page_footer');
     }
 
-    public function lasada()
+    public function aset()
     {
         $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
-        $data['title'] = "Lasada";
+        $data['title'] = "Aset";
         $this->load->view('templates/page_header', $data);
         $this->load->view('templates/menu/sidebar-menu');
         $this->load->view('templates/navbar', $data);
@@ -77,14 +77,25 @@ class User extends CI_Controller
         $this->load->view('templates/page_footer');
     }
 
-    public function sewa()
+    public function lasada()
     {
         $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
-        $data['title'] = "Lasada";
+        $data['title'] = "Aset";
         $this->load->view('templates/page_header', $data);
         $this->load->view('templates/menu/sidebar-menu');
         $this->load->view('templates/navbar', $data);
         $this->load->view('templates/pages/lasada/sewa', $data);
+        $this->load->view('templates/page_footer');
+    }
+
+    public function layanan_lainnya()
+    {
+        $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['title'] = "Aset";
+        $this->load->view('templates/page_header', $data);
+        $this->load->view('templates/menu/sidebar-menu');
+        $this->load->view('templates/navbar', $data);
+        $this->load->view('templates/pages/lasada/layanan-lainnya', $data);
         $this->load->view('templates/page_footer');
     }
 
@@ -96,13 +107,14 @@ class User extends CI_Controller
         $this->load->view('templates/menu/sidebar-menu');
         $this->load->view('templates/navbar', $data);
         $this->load->view('templates/pages/info');
-        $this->load->view('templates/page_footer');
+        $this->load->view('templates/page_footer', $data);
     }
 
     public function pengajuan_spm()
     {
         $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
-        $data['title'] = "Ajukan SPM";
+        $data['title'] = "Versi Barada-E";
+        $data['tahunIdent'] = date("Y");
 
 
         $this->load->view('templates/page_header', $data);
@@ -111,10 +123,31 @@ class User extends CI_Controller
         $this->load->view('templates/pages/pengajuan_spm', $data);
         $this->load->view('templates/page_footer');
     }
+
+    public function tampilkanDataAjuByYear()
+    {
+        $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['title'] = "Versi Barada-E";
+        $selectedYear = $this->input->post('tahun');
+        $data['tahunIdent'] = $selectedYear;
+
+
+        if ($selectedYear == date("Y")) {
+            redirect('user/pengajuan_spm');
+        } else {
+            $this->load->view('templates/page_header', $data);
+            $this->load->view('templates/menu/sidebar-menu');
+            $this->load->view('templates/navbar', $data);
+            $this->load->view('templates/pages/pengajuan_spm', $data);
+            $this->load->view('templates/page_footer');
+        }
+    }
+
+
     public function view_edit_pengajuan_spm($id_edit_spm)
     {
         $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
-        $data['title'] = "Ajukan SPM";
+        $data['title'] = "Versi Barada-E";
 
         $spmQuery = "SELECT *, spm_masuk.id AS id_masuk_spm FROM status_spm JOIN spm_masuk 
                                                             ON status_spm.id = spm_masuk.id_status JOIN data_user

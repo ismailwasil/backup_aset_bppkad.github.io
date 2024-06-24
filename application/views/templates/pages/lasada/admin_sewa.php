@@ -5,105 +5,41 @@
     <?= $this->session->flashdata('message'); ?>
 
     <?php
-    $queryJumlahSewa = "SELECT * FROM event_acara WHERE id_aset=?";
-
-    $BPU_spg = $this->db->query($queryJumlahSewa, array(1))->num_rows();
-    $mess_sby = $this->db->query($queryJumlahSewa, array(2))->num_rows();
-    $BPU_ktp = $this->db->query($queryJumlahSewa, array(3))->num_rows();
-    $pesanggerahan_ktp = $this->db->query($queryJumlahSewa, array(4))->num_rows();
+    $QueryListAset = "SELECT * FROM aset_sewa";
+    $ListAset = $this->db->query($QueryListAset)->result_array();
     ?>
     <section class="row">
         <div class="col-12 col-lg-9">
             <div class="row">
-                <div class="col-6 col-lg-3 col-md-6">
-                    <?php
-                    $id_role = $this->session->userdata('id_role');
-                    if ($id_role == 1) :
-                    ?>
-                        <a href="<?= base_url('admin/') ?>admin_bpu_spg">
-                        <?php elseif ($id_role == 4) : ?>
-                            <a href="<?= base_url('developer/') ?>admin_bpu_spg">
-                            <?php endif; ?>
+                <?php foreach ($ListAset as $LA) : ?>
+                    <div class="col-6 col-lg-3 col-md-6">
+                        <?php
+                        $id_jumlah_aset = $LA['id_aset'];
+                        $queryJumlahSewa = "SELECT * FROM event_acara WHERE id_aset='$id_jumlah_aset'";
+                        $jumlahAngkaSewa = $this->db->query($queryJumlahSewa)->num_rows();
+                        $id_role = $this->session->userdata('id_role');
+                        ?>
+                        <a href="<?= $id_role == 1 ? base_url('admin/admin_item_aset/') . $LA['id_aset'] : ($id_role == 4 ? base_url('developer/admin_item_aset/') . $LA['id_aset'] : '#') ?>">
                             <div class="card transform">
                                 <div class="card-body px-3 py-4-5">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <div class="stats-icon purple">
+                                            <div class="stats-icon" style="background-color: <?= $LA['color'] ?>;">
                                                 <span style="color: white;">
-                                                    <i class="fa fa-fw fa-lg fa-building"></i>
+                                                    <i class="fa fa-fw fa-lg fa-bar-chart"></i>
                                                 </span>
                                             </div>
                                         </div>
                                         <div class="col-md-8">
-                                            <h6 class="text-muted font-semibold">BPU Sampang</h6>
-                                            <h6 class="font-extrabold mb-0"><?= $BPU_spg ?></h6>
+                                            <h6 class="text-muted font-semibold"><?= $LA['nm_aset'] ?></h6>
+                                            <h6 class="font-extrabold mb-0"><?= $jumlahAngkaSewa ?></h6>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            </a>
-                </div>
-                <div class="col-6 col-lg-3 col-md-6">
-                    <a href="<?= base_url('admin/') ?>admin_mess_sby">
-                        <div class="card transform">
-                            <div class="card-body px-3 py-4-5">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="stats-icon blue">
-                                            <span style="color: white;">
-                                                <i class="fa fa-fw fa-lg fa-home"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Mess Surabaya</h6>
-                                        <h6 class="font-extrabold mb-0"><?= $mess_sby ?></h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-6 col-lg-3 col-md-6">
-                    <a href="<?= base_url('admin/') ?>admin_bpu_ktp">
-                        <div class="card transform">
-                            <div class="card-body px-3 py-4-5">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="stats-icon green">
-                                            <i class="fa fa-fw fa-lg fa-building-o"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">BPU Ketapang</h6>
-                                        <h6 class="font-extrabold mb-0"><?= $BPU_ktp ?></h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-6 col-lg-3 col-md-6">
-                    <a href="<?= base_url('admin/') ?>admin_pesanggerahan_ktp">
-                        <div class="card transform">
-                            <div class="card-body px-3 py-4-5">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="stats-icon red">
-                                            <span style="color: white;">
-                                                <i class="fa fa-fw fa-lg fa-home"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Pesanggrahan</h6>
-                                        <h6 class="font-extrabold mb-0"><?= $pesanggerahan_ktp ?></h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                <?php endforeach; ?>
             </div>
             <div class="row">
                 <script src="<?= base_url('assets/') ?>js/chartV2.9.4.js"></script>

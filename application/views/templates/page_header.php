@@ -26,8 +26,10 @@
 
     <link rel="stylesheet" href="<?= base_url('assets/'); ?>vendors/perfect-scrollbar/perfect-scrollbar.css">
     <link rel="stylesheet" href="<?= base_url('assets/'); ?>vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="<?= base_url('assets/'); ?>vendors/toastify/toastify.css">
     <link rel="stylesheet" href="<?= base_url('assets/'); ?>css/app.css">
-    <!-- <link rel="stylesheet" href="<?= base_url('assets/'); ?>css/app-dark.css"> -->
+    <link rel="stylesheet" href="<?= base_url('assets/'); ?>css/loader.css">
+    <link rel="stylesheet" href="<?= base_url('assets/'); ?>css/app-dark.css">
     <link rel="stylesheet" href="<?= base_url('assets/'); ?>css/button.css">
     <link rel="stylesheet" href="<?= base_url('assets/'); ?>css/newbutton.css">
 
@@ -40,6 +42,10 @@
     <link rel="stylesheet" type="text/css" href="<?= base_url('assets/datatable-tfoot/') ?>jquery.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="<?= base_url('assets/datatable-tfoot/') ?>jquery.dataTables.2.min.css">
     <link rel="stylesheet" type="text/css" href="<?= base_url('assets/datatable-tfoot/') ?>buttons.dataTables.min.css">
+
+    <script src="<?= base_url('assets/'); ?>js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css">
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
 
 
     <style>

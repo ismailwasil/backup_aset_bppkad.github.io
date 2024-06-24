@@ -41,19 +41,128 @@ class Developer extends CI_Controller
         $data['acara'] = $this->db->get()->result();
 
         $data['title'] = "Admin";
+        $data['has_sub'] = "Admin Sewa";
         $this->load->view('templates/page_header', $data);
         $this->load->view('templates/menu/sidebar-menu');
         $this->load->view('templates/navbar', $data);
         $this->load->view('templates/pages/lasada/admin_sewa', $data);
         $this->load->view('templates/page_footer', $data);
     }
-    public function admin_bpu_spg()
+
+    public function view_details_verif_sewa($id)
+    {
+        $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['title'] = "Admin";
+        $data['has_sub'] = "Admin Sewa";
+
+        $sewaQuery = "SELECT * FROM status_sewa JOIN event_acara
+                            ON status_sewa.id_status=event_acara.id_status JOIN aset_sewa
+                            ON event_acara.id_aset=aset_sewa.id_aset
+                            WHERE id=$id";
+        $data['sewa_masuk'] = $this->db->query($sewaQuery)->row_array();
+
+        $this->load->view('templates/page_header', $data);
+        $this->load->view('templates/menu/sidebar-menu');
+        $this->load->view('templates/navbar', $data);
+        $this->load->view('templates/pages/lasada/view_details_verif_sewa', $data);
+        $this->load->view('templates/page_footer');
+    }
+
+    public function edit_sewa($id)
+    {
+        $nama = htmlspecialchars($this->input->post('nama'));
+        $tgl_awal_acara = htmlspecialchars($this->input->post('tanggal-awal')) . ' ' . htmlspecialchars($this->input->post('waktu-awal'));
+        $tgl_akhir_acara = htmlspecialchars($this->input->post('tanggal-akhir'))  . ' ' . htmlspecialchars($this->input->post('waktu-akhir'));
+        $keperluan = htmlspecialchars($this->input->post('acara'));
+
+        // cek jika ada gambar diupload
+        $bukti_pengenal = $_FILES['buktiIDupdate']['name'];
+        // var_dump($bukti_pengenal);
+        // die();
+
+        if ($bukti_pengenal) {
+            $config['allowed_types'] = 'jpeg|jpg|png|pdf';
+            $config['max_size'] = '1024000';
+            $config['upload_path'] = './assets/doc/LASADA';
+
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config); //mengatasi error upload_path
+
+            if ($this->upload->do_upload('buktiIDupdate')) {
+                // hapus file dokumen lama
+                $uploadDirUpdate = './assets/doc/LASADA/';
+                $hasilrecordUpdate = $this->db->get_where('event_acara', ['id' => $id])->row_array();
+                $filenameLama = $hasilrecordUpdate['bukti_pengenal'];
+                // Delete the temporary uploaded file
+                unlink($uploadDirUpdate . $filenameLama);
+
+                $dok = $this->upload->data('file_name');
+                $queryUpdate1 = "UPDATE event_acara
+                                SET nama='$nama', keperluan='$keperluan', tgl_awal_acara='$tgl_awal_acara', tgl_akhir_acara='$tgl_akhir_acara', bukti_pengenal='$dok'
+                                WHERE id=$id
+                                ";
+                $this->db->query($queryUpdate1);
+                $swal1 = '<script>
+                            window.addEventListener("load", function() {
+                                Toastify({
+                                    text: "Sewa Berhasil Diedit",
+                                    duration: 3000,
+                                    close: true,
+                                    gravity: "center",
+                                    position: "center",
+                                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                                }).showToast();
+                            });
+                        </script>';
+                $this->session->set_flashdata('message', $swal1);
+                redirect('developer/view_details_verif_sewa/' . $id);
+            } else {
+                $pesanError = $this->upload->display_errors();
+                $swalerror = '<script>
+                                    window.addEventListener("load", function() {
+                                        Toastify({
+                                            text: "' . $pesanError . '",
+                                            duration: 3000,
+                                            close: true,
+                                            gravity: "center",
+                                            position: "center",
+                                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                                        }).showToast();
+                                    });
+                                </script>';
+                $this->session->set_flashdata('message', $swalerror);
+                redirect('developer/view_details_verif_sewa/' . $id);
+            }
+        } else {
+            $queryUpdate = "UPDATE event_acara
+                                    SET nama='$nama', keperluan='$keperluan', tgl_awal_acara='$tgl_awal_acara', tgl_akhir_acara='$tgl_akhir_acara'
+                                    WHERE id=$id
+                                    ";
+            $this->db->query($queryUpdate);
+            $swal = '<script>
+                            window.addEventListener("load", function() {
+                                Toastify({
+                                    text: "Sewa Berhasil Diedit",
+                                    duration: 3000,
+                                    close: true,
+                                    gravity: "center",
+                                    position: "center",
+                                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                                }).showToast();
+                            });
+                        </script>';
+            $this->session->set_flashdata('message', $swal);
+            redirect('developer/view_details_verif_sewa/' . $id);
+        }
+    }
+
+    public function admin_item_aset($id_aset)
     {
         $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
 
         $querySewaAset = "SELECT * FROM aset_sewa JOIN event_acara ON aset_sewa.id_aset=event_acara.id_aset JOIN status_sewa
                             ON event_acara.id_status=status_sewa.id_status
-                            WHERE event_acara.id_aset = 1 AND event_acara.id_status=?
+                            WHERE event_acara.id_aset = $id_aset AND event_acara.id_status=?
                             ORDER BY ? ASC
                         ";
         $data['sewa'] = $this->db->query($querySewaAset, array(1, 'tgl_book'))->result_array();
@@ -66,19 +175,97 @@ class Developer extends CI_Controller
                         GROUP BY aset_sewa.id_aset,aset_sewa.nm_aset, aset_sewa.color
                         ORDER BY aset_sewa.id_aset ASC";
         $data['acara'] = $this->db->query($queryAcara)->result();
+        $data['id_aset'] = $id_aset;
 
-        $data['title'] = "Admin Lasada";
+        $data['title'] = "Admin";
+        $data['has_sub'] = "Admin Sewa";
         $this->load->view('templates/page_header', $data);
         $this->load->view('templates/menu/sidebar-menu');
         $this->load->view('templates/navbar', $data);
-        $this->load->view('templates/pages/lasada/admin_BPU_spg', $data);
+        $this->load->view('templates/pages/lasada/admin_item_aset', $data);
         $this->load->view('templates/page_footer', $data);
+    }
+
+    public function verif_lasada($id_lasada)
+    {
+        $user = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
+
+        $queryVerifLasada = "UPDATE event_acara 
+                        SET id_status=3
+                        WHERE id=$id_lasada
+                        ";
+        $this->db->query($queryVerifLasada);
+        $swal = '<script>
+                    window.addEventListener("load", function() {
+                        Toastify({
+                            text: "Sewa Berhasil Disetujui",
+                            duration: 3000,
+                            close: true,
+                            gravity: "center",
+                            position: "center",
+                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        }).showToast();
+                    });
+                </script>';
+        $this->session->set_flashdata('message', $swal);
+        // cek aset mana yang aktif
+        $aset_active = $this->db->get_where('event_acara', ['id' => $id_lasada])->row_array();
+        redirect('developer/admin_item_aset/' . $aset_active['id_aset']);
+    }
+
+    public function hapus_lasada($id_lasada)
+    {
+        $id_role = $this->session->userdata('id_role');
+        $user = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
+
+        $uploadDir = './assets/doc/LASADA/';
+        $hasilrecord = $this->db->get_where('event_acara', ['id' => $id_lasada])->row_array();
+        $filename = $hasilrecord['bukti_pengenal'];
+        // Delete the temporary uploaded file
+        unlink($uploadDir . $filename);
+
+        $queryHapus = "DELETE FROM event_acara 
+                        WHERE id=$id_lasada
+                        ";
+        $this->db->query($queryHapus);
+        $swal = '<script>
+                    window.addEventListener("load", function() {
+                        Toastify({
+                            text: "Sewa Berhasil Dihapus",
+                            duration: 3000,
+                            close: true,
+                            gravity: "center",
+                            position: "center",
+                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        }).showToast();
+                    });
+                </script>';
+        $this->session->set_flashdata('message', $swal);
+        redirect('developer/admin_sewa');
     }
 
     public function verifikasi_spm()
     {
         $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
+
+        $tahun_now = date("Y");
+        $data['tahunIdent'] = date("Y");
+
+        $queryJumlahSPMmasuk = "SELECT * FROM spm_masuk WHERE id_status=? AND tgl_aju LIKE '$tahun_now%'";
+
+        $data['proses'] = $this->db->query($queryJumlahSPMmasuk, array(1))->num_rows();
+        $data['tolak'] = $this->db->query($queryJumlahSPMmasuk, array(2))->num_rows();
+        $data['verified'] = $this->db->query($queryJumlahSPMmasuk, array(3))->num_rows();
+
+        $spmQuery = "SELECT spm_masuk.id AS id_masuk_spm, spm_masuk.tgl_verif, spm_masuk.reg, data_user.name, spm_masuk.no_spm, spm_masuk.jenis,spm_masuk.dokumen, spm_masuk.verifikator FROM status_spm JOIN spm_masuk 
+                                                                ON status_spm.id = spm_masuk.id_status JOIN data_user ON spm_masuk.skpd=data_user.id
+                                                                WHERE spm_masuk.id_status=3 AND spm_masuk.tgl_aju LIKE '$tahun_now%'
+                                                                ORDER BY spm_masuk.reg DESC
+                                                                ";
+        $data['spm_masuk'] = $this->db->query($spmQuery)->result_array();
+
         $data['title'] = "Admin";
+        $data['has_sub'] = "SPM";
         $this->load->view('templates/page_header', $data);
         $this->load->view('templates/menu/sidebar-menu');
         $this->load->view('templates/navbar', $data);
@@ -86,20 +273,21 @@ class Developer extends CI_Controller
         $this->load->view('templates/page_footer');
     }
 
-    public function lasada()
+    public function aset()
     {
         $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
-        $data['title'] = "Lasada";
+        $data['title'] = "Aset";
         $this->load->view('templates/page_header', $data);
         $this->load->view('templates/menu/sidebar-menu');
         $this->load->view('templates/navbar', $data);
         $this->load->view('templates/pages/lasada/lasada2', $data);
         $this->load->view('templates/page_footer');
     }
-    public function sewa()
+
+    public function lasada()
     {
         $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
-        $data['title'] = "Lasada";
+        $data['title'] = "Aset";
         $this->load->view('templates/page_header', $data);
         $this->load->view('templates/menu/sidebar-menu');
         $this->load->view('templates/navbar', $data);
@@ -107,10 +295,23 @@ class Developer extends CI_Controller
         $this->load->view('templates/page_footer');
     }
 
+    public function layanan_lainnya()
+    {
+        $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['title'] = "Aset";
+        $this->load->view('templates/page_header', $data);
+        $this->load->view('templates/menu/sidebar-menu');
+        $this->load->view('templates/navbar', $data);
+        $this->load->view('templates/pages/lasada/layanan-lainnya', $data);
+        $this->load->view('templates/page_footer');
+    }
+
     public function pengajuan_spm()
     {
         $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
-        $data['title'] = "Ajukan SPM";
+        $data['title'] = "Versi Barada-E";
+        $data['tahunIdent'] = date("Y");
+
         $this->load->view('templates/page_header', $data);
         $this->load->view('templates/menu/sidebar-menu');
         $this->load->view('templates/navbar', $data);
@@ -118,10 +319,30 @@ class Developer extends CI_Controller
         $this->load->view('templates/page_footer');
     }
 
+    public function tampilkanDataAjuByYear()
+    {
+        $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['title'] = "Versi Barada-E";
+        $selectedYear = $this->input->post('tahun');
+        $data['tahunIdent'] = $selectedYear;
+
+
+        if ($selectedYear == date("Y")) {
+            redirect('developer/pengajuan_spm');
+        } else {
+            $this->load->view('templates/page_header', $data);
+            $this->load->view('templates/menu/sidebar-menu');
+            $this->load->view('templates/navbar', $data);
+            $this->load->view('templates/pages/pengajuan_spm', $data);
+            $this->load->view('templates/page_footer');
+        }
+    }
+
+
     public function view_edit_pengajuan_spm($id_edit_spm)
     {
         $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
-        $data['title'] = "Ajukan SPM";
+        $data['title'] = "Versi Barada-E";
 
         $spmQuery = "SELECT *, spm_masuk.id AS id_masuk_spm FROM status_spm JOIN spm_masuk 
                                                             ON status_spm.id = spm_masuk.id_status JOIN data_user
@@ -145,7 +366,7 @@ class Developer extends CI_Controller
         $this->load->view('templates/menu/sidebar-menu');
         $this->load->view('templates/navbar', $data);
         $this->load->view('templates/pages/info');
-        $this->load->view('templates/page_footer');
+        $this->load->view('templates/page_footer', $data);
     }
 
     public function contact()
@@ -162,7 +383,7 @@ class Developer extends CI_Controller
     public function menu()
     {
         $data['title'] = "Manage";
-        $data['title_sub'] = "Menu";
+        $data['has_sub'] = "Menu";
         $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
 
         $data['menu'] = $this->db->get('menu')->result_array();
@@ -179,13 +400,14 @@ class Developer extends CI_Controller
 
             $swal = '<script>
                         window.addEventListener("load", function() {
-                            Swal.fire({
-                                title: "Success!",
-                                text: "Menu baru berhasil ditambahkan",
-                                icon: "success",
-                                showConfirmButton: false,
-                                timer: 1300,
-                            })
+                            Toastify({
+                                text: "Menu Berhasil Ditambahkan",
+                                duration: 3000,
+                                close: true,
+                                gravity: "center",
+                                position: "center",
+                                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                            }).showToast();
                         });
                     </script>';
             $this->session->set_flashdata('message', $swal);
@@ -210,13 +432,14 @@ class Developer extends CI_Controller
         $this->db->insert('sub_menu', $data);
         $swal = '<script>
                     window.addEventListener("load", function() {
-                        Swal.fire({
-                            title: "Success!",
-                            text: "Sub Menu Baru berhasil ditambahkan",
-                            icon: "success",
-                            showConfirmButton: false,
-                            timer: 1300,
-                        })
+                        Toastify({
+                            text: "Sub Menu Baru Berhasil Ditambahkan",
+                            duration: 3000,
+                            close: true,
+                            gravity: "center",
+                            position: "center",
+                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        }).showToast();
                     });
                 </script>';
         $this->session->set_flashdata('message', $swal);
@@ -233,13 +456,14 @@ class Developer extends CI_Controller
         $this->db->query($queryEditMenu);
         $swal = '<script>
                     window.addEventListener("load", function() {
-                        Swal.fire({
-                            title: "Success!",
-                            text: "Menu berhasil diedit",
-                            icon: "success",
-                            showConfirmButton: false,
-                            timer: 1300,
-                        })
+                        Toastify({
+                            text: "Menu Berhasil Diedit",
+                            duration: 3000,
+                            close: true,
+                            gravity: "center",
+                            position: "center",
+                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        }).showToast();
                     });
                 </script>';
         $this->session->set_flashdata('message', $swal);
@@ -259,13 +483,14 @@ class Developer extends CI_Controller
         $this->db->query($queryEditMenu);
         $swal = '<script>
                     window.addEventListener("load", function() {
-                        Swal.fire({
-                            title: "Success!",
-                            text: "Sub Menu berhasil diedit",
-                            icon: "success",
-                            showConfirmButton: false,
-                            timer: 1300,
-                        })
+                        Toastify({
+                            text: "Sub Menu Berhasil Diedit",
+                            duration: 3000,
+                            close: true,
+                            gravity: "center",
+                            position: "center",
+                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        }).showToast();
                     });
                 </script>';
         $this->session->set_flashdata('message', $swal);
@@ -282,13 +507,14 @@ class Developer extends CI_Controller
         $this->db->query($queryDelete);
         $swal = '<script>
                     window.addEventListener("load", function() {
-                        Swal.fire({
-                            title: "Success!",
-                            text: "Menu Berhasil dihapus",
-                            icon: "success",
-                            showConfirmButton: false,
-                            timer: 1300,
-                        })
+                        Toastify({
+                            text: "Menu Berhasil Dihapus",
+                            duration: 3000,
+                            close: true,
+                            gravity: "center",
+                            position: "center",
+                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        }).showToast();
                     });
                 </script>';
         $this->session->set_flashdata('message', $swal);
@@ -302,13 +528,14 @@ class Developer extends CI_Controller
         $this->db->query($queryDelete);
         $swal = '<script>
                     window.addEventListener("load", function() {
-                        Swal.fire({
-                            title: "Success!",
-                            text: "Sub Menu Berhasil dihapus",
-                            icon: "success",
-                            showConfirmButton: false,
-                            timer: 1300,
-                        })
+                        Toastify({
+                            text: "Sub Menu Berhasil Dihapus",
+                            duration: 3000,
+                            close: true,
+                            gravity: "center",
+                            position: "center",
+                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        }).showToast();
                     });
                 </script>';
         $this->session->set_flashdata('message', $swal);
@@ -318,6 +545,7 @@ class Developer extends CI_Controller
     public function user_manage()
     {
         $data['title'] = "Manage";
+        $data['has_sub'] = "User";
         $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
 
         $user = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
@@ -352,13 +580,14 @@ class Developer extends CI_Controller
         $this->db->query($queryDelete);
         $swal = '<script>
                     window.addEventListener("load", function() {
-                        Swal.fire({
-                            title: "Success!",
-                            text: "User Berhasil di-update",
-                            icon: "success",
-                            showConfirmButton: false,
-                            timer: 1300,
-                        })
+                        Toastify({
+                            text: "User Berhasil Di-Update",
+                            duration: 3000,
+                            close: true,
+                            gravity: "center",
+                            position: "center",
+                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        }).showToast();
                     });
                 </script>';
         $this->session->set_flashdata('message', $swal);
@@ -396,13 +625,14 @@ class Developer extends CI_Controller
         $this->db->insert('data_user', $data);
         $swal = '<script>
                     window.addEventListener("load", function() {
-                        Swal.fire({
-                            title: "Success!",
-                            text: "User Baru berhasil ditambahkan",
-                            icon: "success",
-                            showConfirmButton: false,
-                            timer: 1300,
-                        })
+                        Toastify({
+                            text: "User Baru Berhasil Ditambahkan",
+                            duration: 3000,
+                            close: true,
+                            gravity: "center",
+                            position: "center",
+                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        }).showToast();
                     });
                 </script>';
         $this->session->set_flashdata('message', $swal);
@@ -418,13 +648,14 @@ class Developer extends CI_Controller
         $this->db->query($queryDelete);
         $swal = '<script>
                     window.addEventListener("load", function() {
-                        Swal.fire({
-                            title: "Success!",
-                            text: "User Berhasil dihapus",
-                            icon: "success",
-                            showConfirmButton: false,
-                            timer: 1300,
-                        })
+                        Toastify({
+                            text: "User Berhasil Dihapus",
+                            duration: 3000,
+                            close: true,
+                            gravity: "center",
+                            position: "center",
+                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        }).showToast();
                     });
                 </script>';
         $this->session->set_flashdata('message', $swal);
@@ -450,13 +681,14 @@ class Developer extends CI_Controller
         $this->db->query($queryUbahPwd);
         $swal = '<script>
                     window.addEventListener("load", function() {
-                        Swal.fire({
-                            title: "Success!",
-                            text: "User Berhasil dihapus",
-                            icon: "success",
-                            showConfirmButton: false,
-                            timer: 1300,
-                        })
+                        Toastify({
+                            text: "Password Berhasil Di-Update",
+                            duration: 3000,
+                            close: true,
+                            gravity: "center",
+                            position: "center",
+                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        }).showToast();
                     });
                 </script>';
         $this->session->set_flashdata('message', $swal);

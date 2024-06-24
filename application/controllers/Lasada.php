@@ -8,9 +8,9 @@ class Lasada extends CI_Controller
         parent::__construct();
         $this->load->helper(array('form', 'url'));
         $this->load->library('form_validation');
-        if (!$this->session->userdata('username')) {
-            redirect('auth');
-        }
+        // if (!$this->session->userdata('username')) {
+        //     redirect('auth');
+        // }
     }
     public function bpu_spg()
     {
@@ -23,13 +23,30 @@ class Lasada extends CI_Controller
                         ";
         $data['sewa'] = $this->db->query($querySewaAset)->result_array();
 
-        $data['title'] = "Lasada";
+        $data['title'] = "Aset";
         $this->load->view('templates/page_header', $data);
         $this->load->view('templates/menu/sidebar-menu');
         $this->load->view('templates/navbar', $data);
         $this->load->view('templates/pages/lasada/bpu_spg', $data);
         $this->load->view('templates/page_footer');
     }
+
+    public function get_events($id_aset)
+    {
+        $events = $this->db->get_where('event_acara', ['id_aset' => $id_aset])->result();
+
+        $result = array();
+        foreach ($events as $event) {
+            $result[] = array(
+                'title' => $event->keperluan,
+                'start' => $event->tgl_awal_acara,
+                'end' => $event->tgl_akhir_acara
+            );
+        }
+
+        echo json_encode($result);
+    }
+
     public function get_events_BPU_spg()
     {
         $events = $this->db->get_where('event_acara', ['id_aset' => 1])->result();
@@ -57,7 +74,7 @@ class Lasada extends CI_Controller
                         ";
         $data['sewa'] = $this->db->query($querySewaAset)->result_array();
 
-        $data['title'] = "Lasada";
+        $data['title'] = "Aset";
         $this->load->view('templates/page_header', $data);
         $this->load->view('templates/menu/sidebar-menu');
         $this->load->view('templates/navbar', $data);
@@ -90,7 +107,7 @@ class Lasada extends CI_Controller
                         ";
         $data['sewa'] = $this->db->query($querySewaAset)->result_array();
 
-        $data['title'] = "Lasada";
+        $data['title'] = "Aset";
         $this->load->view('templates/page_header', $data);
         $this->load->view('templates/menu/sidebar-menu');
         $this->load->view('templates/navbar', $data);
@@ -123,7 +140,7 @@ class Lasada extends CI_Controller
                         ";
         $data['sewa'] = $this->db->query($querySewaAset)->result_array();
 
-        $data['title'] = "Lasada";
+        $data['title'] = "Aset";
         $this->load->view('templates/page_header', $data);
         $this->load->view('templates/menu/sidebar-menu');
         $this->load->view('templates/navbar', $data);
@@ -133,6 +150,39 @@ class Lasada extends CI_Controller
     public function get_events_pesanggerahan_ktp()
     {
         $events = $this->db->get_where('event_acara', ['id_aset' => 4])->result();
+
+        $result = array();
+        foreach ($events as $event) {
+            $result[] = array(
+                'title' => $event->keperluan,
+                'start' => $event->tgl_awal_acara,
+                'end' => $event->tgl_akhir_acara
+            );
+        }
+
+        echo json_encode($result);
+    }
+    public function bus_pemda()
+    {
+        $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
+
+        $querySewaAset = "SELECT * FROM event_acara JOIN status_sewa
+                            ON event_acara.id_status=status_sewa.id_status
+                            WHERE id_aset = 5
+                            ORDER BY tgl_awal_acara ASC
+                        ";
+        $data['sewa'] = $this->db->query($querySewaAset)->result_array();
+
+        $data['title'] = "Aset";
+        $this->load->view('templates/page_header', $data);
+        $this->load->view('templates/menu/sidebar-menu');
+        $this->load->view('templates/navbar', $data);
+        $this->load->view('templates/pages/lasada/bus_pemda', $data);
+        $this->load->view('templates/page_footer');
+    }
+    public function get_events_bus_pemda()
+    {
+        $events = $this->db->get_where('event_acara', ['id_aset' => 5])->result();
 
         $result = array();
         foreach ($events as $event) {
@@ -192,7 +242,7 @@ class Lasada extends CI_Controller
         // die();
         if ($bukti_pengenal) {
             $config['allowed_types'] = 'jpeg|jpg|png|pdf';
-            $config['max_size'] = '10024';
+            $config['max_size'] = '1024000';
             $config['upload_path'] = './assets/doc/LASADA';
 
             $this->load->library('upload', $config);
@@ -218,7 +268,7 @@ class Lasada extends CI_Controller
                 }
                 $botToken = '6004321041:AAEOCiRHrWrjRCGYmprns7-Vc9UBQaC4_kA';
                 $chatId = '-856503743';
-                $message = "Pengajuan Sewa " . $namaAset . "\n\n";
+                $message = "Pengajuan Sewa/Pinjam " . $namaAset . "\n\n";
                 $message .= "Nama : " . $nama . "\n";
                 $message .= "No. HP : " . $no_hp . "\n";
                 $message .= "Alamat : " . $alamat . "\n";
@@ -226,46 +276,52 @@ class Lasada extends CI_Controller
                 $message .= "Tgl Booking : " . $tgl_book . "\n";
                 $message .= "Tgl Acara : " . $hariH . "\n";
                 $message .= "No Pengenal : " . $no_pengenal . "\n";
-                $buttonText = "Kirim No Bayar";
-                $buttonURL = "https://api.whatsapp.com/send/?phone=" . $number . "&text=Salam%2C%20" . $nama . "%0A%0AAnda%20menyewa%20*" . $namaAset . "*%0AUntuk%20tanggal%20*" . $tgl_awal_acara . "*%0AUntuk%20keperluan%20*" . $keperluan . "*%0A%0ASilakan%20cek%20tagihan%20pembayaran%20Anda%20dengan%20kode%20pembayaran%20" . $kode_byr . "%0A%0ADan%20lakukan%20pembayaran%20segera.%0ATerima%20kasih";
+                $buttonText = "Kirim Detail";
+                if ($id_aset == 5) {
+                    $buttonURL = "https://api.whatsapp.com/send/?phone=" . $number . "&text=Salam%2C%20" . $nama . "%0A%0AAnda%20menyewa%20*" . $namaAset . "*%0AUntuk%20tanggal%20*" . $tgl_awal_acara . "*%0AUntuk%20keperluan%20*" . $keperluan . "*%0A%0ATerima%20Kasih%0A%0A-Admin%20Aset-";
+                } else {
+                    $buttonURL = "https://api.whatsapp.com/send/?phone=" . $number . "&text=Salam%2C%20" . $nama . "%0A%0AAnda%20menyewa%20*" . $namaAset . "*%0AUntuk%20tanggal%20*" . $tgl_awal_acara . "*%0AUntuk%20keperluan%20*" . $keperluan . "*%0A%0ASilakan%20cek%20tagihan%20pembayaran%20Anda%20dengan%20kode%20pembayaran%20" . $kode_byr . "%0A%0ADan%20lakukan%20pembayaran%20segera.%0A%0ATerima%20Kasih%0A%0A-Admin%20Aset-";
+                }
 
                 $this->telegram->sendMessage($message, $buttonText, $buttonURL, $botToken, $chatId);
 
                 // Response
                 $swal = '<script>
                             window.addEventListener("load", function() {
-                                Swal.fire({
-                                    title: "Success!",
+                                Toastify({
                                     text: "Data booking berhasil ditambahkan",
-                                    icon: "success",
-                                    showConfirmButton: false,
-                                    timer: 1300,
-                                });
+                                    duration: 3000,
+                                    close: true,
+                                    gravity: "center",
+                                    position: "center",
+                                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                                }).showToast();
                             });
                         </script>';
                 $this->session->set_flashdata('message', $swal);
 
                 $id_role = $this->session->userdata('id_role');
                 if ($id_role == 1) {
-                    redirect('admin/sewa');
+                    redirect('admin/lasada');
                 } elseif ($id_role == 4) {
-                    redirect('developer/sewa');
+                    redirect('developer/lasada');
                 } elseif ($id_role == 2) {
-                    redirect('user/sewa');
+                    redirect('user/lasada');
                 } elseif ($id_role == 3) {
-                    redirect('umum/sewa');
+                    redirect('umum/lasada');
                 }
             } else {
                 $pesanError = $this->upload->display_errors();
                 $swal = '<script>
                             window.addEventListener("load", function() {
-                                Swal.fire({
-                                    title: "Error!",
+                                Toastify({
                                     text: "' . $pesanError . '",
-                                    icon: "error",
-                                    showConfirmButton: false,
-                                    timer: 1500,
-                                });
+                                    duration: 3000,
+                                    close: true,
+                                    gravity: "center",
+                                    position: "center",
+                                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                                }).showToast();
                             });
                         </script>';
                 $this->session->set_flashdata('message', $swal);
@@ -286,7 +342,8 @@ class Lasada extends CI_Controller
 
     public function cek_tagihan()
     {
-        $kode_byr_input = htmlspecialchars($this->input->post('kode_bayar'));
+        $hasilInput = htmlspecialchars($this->input->post('kode_bayar'));
+        $kode_byr_input = preg_replace("/[^a-zA-Z0-9]/", "", $hasilInput);
 
         $queryTagihan = "SELECT * FROM aset_sewa JOIN event_acara
                         ON aset_sewa.id_aset=event_acara.id_aset
@@ -332,79 +389,34 @@ class Lasada extends CI_Controller
                 });
                 </script>';
                 $this->session->set_flashdata('message', $swal);
-                // $id_role = $this->session->userdata('id_role');
-
-                // if ($id_role == 1) {
-                //     redirect('admin/lasada');
-                // } elseif ($id_role == 4) {
-                //     redirect('developer/lasada');
-                // } elseif ($id_role == 2) {
-                //     redirect('user/lasada');
-                // } elseif ($id_role == 3) {
-                //     redirect('umum/lasada');
-                // }
             } else {
-                $swal = '<script>
-                            window.addEventListener("load", function() {
-                                    Swal.fire({
-                                    title: "Success",
-                                    text: "Data dengan kode bayar ' . $kode_byr_input . ' belum lunas",
-                                    icon: "success",
-                                    showConfirmButton: true,
-                                })
-                            });
-                        </script>';
-                $this->session->set_flashdata('message', $swal);
-                // $id_role = $this->session->userdata('id_role');
 
-                // if ($id_role == 1) {
-                //     redirect('admin/lasada');
-                // } elseif ($id_role == 4) {
-                //     redirect('developer/lasada');
-                // } elseif ($id_role == 2) {
-                //     redirect('user/lasada');
-                // } elseif ($id_role == 3) {
-                //     redirect('umum/lasada');
-                // }
+                $swal = '<script>
+                window.addEventListener("load", function() {
+                    var inputKdByr = document.getElementById(\'kode_bayar_input\');
+                    const input_bayar = document.querySelector(\'#input-bayar\');
+                    
+                    inputKdByr.value="' . $kode_byr_input . '";
+                    input_bayar.classList.toggle(\'d-none\');
+                    window.location.hash = "input-bayar";
+                });
+                </script>';
+
+                $this->session->set_flashdata('message', $swal);
             }
         } else {
             $swal = '<script>
             window.addEventListener("load", function() {
                 Swal.fire({
                 title: "Gagal!",
-                text: "Data dengan kode bayar <strong>' . $kode_byr_input . '</strong> tidak ditemukan",
+                text: "Data dengan kode bayar ' . $kode_byr_input . ' tidak ditemukan",
                 icon: "error",
                 showConfirmButton: true,
+                allowHtml: true
             })
             });
             </script>';
-            // $gagal = [
-            //     'nama' => '',
-            //     'no_hp' => '',
-            //     'alamat' => '',
-            //     'id_aset' => '',
-            //     'keperluan' => '',
-            //     'tgl_book' => '',
-            //     'tgl_awal_acara' => '',
-            //     'tgl_akhir_acara' => '',
-            //     'no_pengenal' => '',
-            //     'nominal' => '',
-            //     'id_status' => '',
-            //     'kode_byr' => $kode_byr_input,
-            //     'modalType' => 'gagal'
-            // ];
             $this->session->set_flashdata('message', $swal);
-            // $id_role = $this->session->userdata('id_role');
-
-            // if ($id_role == 1) {
-            //     redirect('admin/lasada');
-            // } elseif ($id_role == 4) {
-            //     redirect('developer/lasada');
-            // } elseif ($id_role == 2) {
-            //     redirect('user/lasada');
-            // } elseif ($id_role == 3) {
-            //     redirect('umum/lasada');
-            // }
         }
         $id_role = $this->session->userdata('id_role');
 

@@ -17,17 +17,17 @@ class Umum extends CI_Controller
     public function index()
     {
         $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
-        $data['title'] = "Lasada";
+        $data['title'] = "Aset";
         $this->load->view('templates/page_header', $data);
         $this->load->view('templates/menu/sidebar-menu');
         $this->load->view('templates/navbar', $data);
         $this->load->view('templates/pages/lasada/lasada2', $data);
         $this->load->view('templates/page_footer');
     }
-    public function lasada()
+    public function aset()
     {
         $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
-        $data['title'] = "Lasada";
+        $data['title'] = "Aset";
         $this->load->view('templates/page_header', $data);
         $this->load->view('templates/menu/sidebar-menu');
         $this->load->view('templates/navbar', $data);
@@ -35,15 +35,37 @@ class Umum extends CI_Controller
         $this->load->view('templates/page_footer');
     }
 
-    public function sewa()
+    public function lasada()
     {
         $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
-        $data['title'] = "Lasada";
+        $data['title'] = "Aset";
         $this->load->view('templates/page_header', $data);
         $this->load->view('templates/menu/sidebar-menu');
         $this->load->view('templates/navbar', $data);
         $this->load->view('templates/pages/lasada/sewa', $data);
         $this->load->view('templates/page_footer');
+    }
+
+    public function layanan_lainnya()
+    {
+        $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['title'] = "Aset";
+        $this->load->view('templates/page_header', $data);
+        $this->load->view('templates/menu/sidebar-menu');
+        $this->load->view('templates/navbar', $data);
+        $this->load->view('templates/pages/lasada/layanan-lainnya', $data);
+        $this->load->view('templates/page_footer');
+    }
+
+    public function info()
+    {
+        $data['user'] = $this->db->get_where('data_user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['title'] = "Info";
+        $this->load->view('templates/page_header', $data);
+        $this->load->view('templates/menu/sidebar-menu');
+        $this->load->view('templates/navbar', $data);
+        $this->load->view('templates/pages/info');
+        $this->load->view('templates/page_footer', $data);
     }
 
     public function ajukan()

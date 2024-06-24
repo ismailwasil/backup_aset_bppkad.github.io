@@ -15,7 +15,7 @@
 </style>
 <div class="col-lg-7 d-none d-lg-block">
     <div id="auth-right">
-        <img src="<?= base_url('assets/'); ?>images/logo/BPPKAD.png" alt="BPPKAD" id="shadow" class="responsive2">
+        <img src="<?= base_url('assets/'); ?>images/logo/Logo-BPPKAD.svg" alt="BPPKAD" id="shadow" class="responsive2">
     </div>
 </div>
 </div>

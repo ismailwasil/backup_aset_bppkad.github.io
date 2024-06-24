@@ -1,3 +1,158 @@
+.w3-animate-opacity {
+    animation: opac 0.8s
+}
+
+@keyframes opac {
+    from {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+.w3-animate-top {
+    position: relative;
+    animation: animatetop 0.4s
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+.w3-animate-left {
+    position: relative;
+    animation: animateleft 0.4s
+}
+
+@keyframes animateleft {
+    from {
+        left: -300px;
+        opacity: 0
+    }
+
+    to {
+        left: 0;
+        opacity: 1
+    }
+}
+
+.w3-animate-right {
+    position: relative;
+    animation: animateright 0.4s
+}
+
+@keyframes animateright {
+    from {
+        right: -300px;
+        opacity: 0
+    }
+
+    to {
+        right: 0;
+        opacity: 1
+    }
+}
+
+.w3-animate-bottom {
+    position: relative;
+    animation: animatebottom 0.4s
+}
+
+@keyframes animatebottom {
+    from {
+        bottom: -300px;
+        opacity: 0
+    }
+
+    to {
+        bottom: 0;
+        opacity: 1
+    }
+}
+
+.w3-animate-zoom {
+    animation: animatezoom 0.1s
+}
+
+@keyframes animatezoom {
+    from {
+        transform: scale(0)
+    }
+
+    to {
+        transform: scale(1)
+    }
+}
+
+/* RamadhanCountdown CSS */
+.box-inset-blue {
+    border-radius: 15px;
+    box-shadow: inset 5px 5px 5px #2b418f,
+        inset -5px -5px 5px #5f7ce7;
+}
+
+.rmd-icon-box {
+    box-shadow: inset 2px -2px 4px #e6ebf2,
+        inset -2px 2px 4px #feffff;
+}
+
+.rmd-countdown-box {
+    box-shadow: inset 5px 5px 10px #d7dbe7,
+        inset -5px -5px 10px #f3f7ff;
+    border-radius: 20px;
+}
+
+.rmd-animation {
+    animation: scaleUp 0.5s ease-in-out;
+}
+
+@keyframes scaleUp {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+/* /RamadhanCountdown CSS */
+
+/* Ismail Shape */
+#rectangle-ismail {
+    position: absolute;
+    width: 200px;
+    height: 60px;
+    background: #2e468a;
+    z-index: 1;
+    bottom: -5.5em;
+    left: 20em;
+}
+
+#triangle-ismail {
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 0 0 45px 45px;
+    border-color: transparent transparent #25396F transparent;
+    transform: rotate(0deg);
+}
+
+/* Ismail Shape */
+
+
 /* FlipCard */
 .flip-card {
     background-color: transparent;
@@ -15,7 +170,7 @@
     left: 18.6em;
 }
 
-.logo {
+.contactless {
     position: absolute;
     top: 6.8em;
     left: 11.7em;
@@ -23,16 +178,26 @@
 
 .chip {
     position: absolute;
-    top: 2.3em;
-    left: 1.5em;
-    max-width: 16%;
+    top: -0.5em;
+    left: -0.5em;
+    max-width: 45%;
 }
 
-.contactless {
+.logo {
     position: absolute;
-    top: 2.5em;
+    top: 2em;
     left: 10.4em;
-    max-width: 16%;
+    max-width: 22%;
+}
+
+.logoproduct {
+    position: absolute;
+    top: 2em;
+    left: 7em;
+    max-width: 45%;
+    filter: drop-shadow(1px 1px 2px #ffffff);
+    -webkit-filter: drop-shadow(1px 1px 2px #ffffff);
+    -moz-filter: drop-shadow(1px 1px 2px #ffffff);
 }
 
 .title-flip-card {
@@ -173,29 +338,81 @@
 
 .flip-card-front-1 {
     box-shadow: 0.2em 0.2em #dbdbdb;
-    background-color: #203e97;
-    background-image: linear-gradient(#203e97, #3b5dc0, #203e97);
+    background-color: #176906;
+    background-image: linear-gradient(to bottom right, #176906 0%, #176906 22%, #39af22 47%, #176906 81%, #176906 100%);
+}
+
+.flip-card-front-11 {
+    box-shadow: 0.2em 0.2em #dbdbdb;
+    background-color: #176906;
+    background-image: linear-gradient(to bottom right, #176906 0%, #176906 22%, #39af22 47%, #176906 81%, #176906 100%);
 }
 
 .flip-card-front-2 {
     box-shadow: 0.2em 0.2em #dbdbdb;
-    background-color: #703bb6;
-    background-image: linear-gradient(#703bb6, #a669f5, #703bb6);
+    background-color: #6126af;
+    background-image: linear-gradient(to bottom right, #6126af 0%, #6126af 22%, #9f62f0 47%, #6126af 81%, #6126af 100%);
 }
 
 .flip-card-front-3 {
     box-shadow: 0.2em 0.2em #dbdbdb;
     background-color: #851046;
-    background-image: linear-gradient(#851046, #c93178, #851046);
+    background-image: linear-gradient(to bottom right, #851046 0%, #851046 22%, #c93178 47%, #851046 81%, #851046 100%);
 }
 
 .flip-card-back {
     box-shadow: 0.2em 0.2em #929292;
     background-color: #424242;
+    background-image: linear-gradient(to right bottom, #424242 0%, #424242 22%, #7a7a7a 47%, #424242 81%, #424242 100%);
     transform: rotateY(180deg);
 }
 
 /* /FlipCard */
+
+.notification-icon {
+    position: relative;
+    display: inline-block;
+}
+
+.notification-icon .badge-icon {
+    position: absolute;
+    top: -5px;
+    right: 11px;
+    background-color: red;
+    color: white;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 22px;
+    /*animasi*/
+    transition: all 0.3s ease-in-out 0s;
+    box-shadow: #da4601d0 0px 0px 0px 0px;
+    animation: 1s cubic-bezier(0.8, 0, 0, 1) 0s infinite normal none running pulse;
+}
+
+@keyframes pulse {
+    100% {
+        box-shadow: 0 0 0 25px #ff5e0000;
+    }
+}
+
+/* Efek pulse/denyut */
+.denyut {
+    transition: all 0.3s ease-in-out 0s;
+    box-shadow: #2e378ad0 0px 0px 0px 0px;
+    animation: 1s cubic-bezier(0.8, 0, 0, 1) 0s infinite normal none running pulse2;
+}
+
+@keyframes pulse2 {
+    100% {
+        box-shadow: 0 0 0 25px #2e378a00;
+    }
+}
+
+/* /Efek pulse/denyut */
 
 /* Position Ismail */
 .center-display {
@@ -586,9 +803,10 @@
 .card {
     margin-bottom: 2.2rem;
     border: none;
-    border-radius: 15px;
-    background: #f2f7ff;
-    box-shadow: 8px 8px 16px #bfc3c9, -8px -8px 16px #ffffff;
+    border-radius: 20px;
+    background: #e5e9f6;
+    box-shadow: 5px 5px 10px #d7dbe7,
+        -5px -5px 10px #f3f7ff;
 }
 
 .card.card-statistic {
@@ -1343,9 +1561,13 @@
 }
 
 .sidebar-wrapper .menu .submenu .submenu-item.active>a {
-    color: #435ebe;
+    color: #0b0ff7;
     font-weight: 700;
-    text-decoration: underline;
+}
+
+.sidebar-wrapper .menu .submenu .submenu-item.active>a::after {
+    content: "➔";
+    color: #c50101;
 }
 
 .sidebar-wrapper .menu .submenu .submenu-item a {

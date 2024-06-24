@@ -19,13 +19,27 @@
     <section class="section">
         <div class="row">
             <div class="col-12 col-lg-9">
-                <!-- Poster Pengajuan SPM -->
-                <div class="card">
-                    <div class="card-content">
-                        <img class="card-img-top img-fluid responsive" src="<?= base_url('assets/'); ?>images/info/pengajuan-spm.png" alt="Alur Pengajuan SPM" />
-                    </div>
-                </div>
-                <!-- /Poster Pengajuan SPM -->
+                <!-- Running Text -->
+
+                <!-- CSS Code -->
+                <style>
+                    .GeneratedMarquee {
+                        font-family: Geneva, sans-serif;
+                        font-size: 1em;
+                        line-height: 1.3em;
+                        color: #4765d1;
+                        padding: 0.3mm;
+                        margin: 0.8mm;
+                    }
+                </style>
+
+                <!-- HTML Code -->
+                <marquee class="GeneratedMarquee" direction="left" scrollamount="6" behavior="scroll">
+                    Gantilah Password secara berkala, konfirmasikan kepada developer.
+                </marquee>
+
+                <br />
+                <!-- /Running Text -->
 
                 <!-- Pejabat -->
                 <!-- Column card -->
@@ -137,6 +151,15 @@
 
                 </div>
                 <!-- /Pejabat -->
+
+                <!-- Poster Pengajuan SPM -->
+                <div class="card">
+                    <div class="card-content">
+                        <img class="card-img-top img-fluid responsive" src="<?= base_url('assets/'); ?>images/info/pengajuan-spm.png" alt="Alur Pengajuan SPM" />
+                    </div>
+                </div>
+                <!-- /Poster Pengajuan SPM -->
+
 
             </div>
             <div class="col-12 col-lg-3">

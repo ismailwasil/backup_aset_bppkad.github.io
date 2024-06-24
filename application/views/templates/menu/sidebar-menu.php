@@ -11,6 +11,7 @@
                         <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
                     </div>
                 </div>
+                <a href="<?= base_url(); ?>" class="animate-charcter"><img src="<?= base_url('assets/'); ?>images/favicon/Trunojoyo.ico" alt="Logo" height="200">aset</a>
             </div>
         </div>
 
@@ -50,66 +51,39 @@
                     ?>
                     <?php foreach ($subMenu as $sm) : ?>
                         <?php if ($sm['has_sub'] == 0) : ?>
-                            <?php if ($title == $sm['title']) : ?>
-                                <li class="sidebar-item active">
-                                <?php else : ?>
-                                <li class="sidebar-item">
-                                <?php endif; ?>
-                                <?php if ($id_role == 1) : ?>
-                                    <a href="<?= base_url() ?>admin/<?= $sm['url']; ?>" class='sidebar-link'>
-                                    <?php elseif ($id_role == 2) : ?>
-                                        <a href="<?= base_url() ?>user/<?= $sm['url']; ?>" class='sidebar-link'>
-                                        <?php elseif ($id_role == 3) : ?>
-                                            <a href="<?= base_url() ?>umum/<?= $sm['url']; ?>" class='sidebar-link'>
-                                            <?php elseif ($id_role == 4) : ?>
-                                                <a href="<?= base_url() ?>developer/<?= $sm['url']; ?>" class='sidebar-link'>
-                                                <?php endif; ?>
-                                                <i class="<?= $sm['icon']; ?>"></i>
-                                                <span><?= $sm['title']; ?></span>
-                                                </a>
-                                </li>
-                            <?php elseif ($sm['has_sub'] == 1) : ?>
-                                <?php if ($title == $sm['title']) : ?>
-                                    <li class="sidebar-item active has-sub">
-                                    <?php else : ?>
-                                    <li class="sidebar-item has-sub">
-                                    <?php endif; ?>
-                                    <a href="#" class='sidebar-link'>
-                                        <i class="<?= $sm['icon']; ?>"></i>
-                                        <span><?= $sm['title']; ?></span>
-                                    </a>
-                                    <?php
-                                    $id_sub_menu = $sm['id_sub_menu'];
-                                    $queryHasSub = "SELECT * FROM has_sub_menu
+                            <li class="<?= $title == $sm['title'] ? 'sidebar-item active' : 'sidebar-item' ?>">
+                                <a href="<?= ($id_role == 1 ? base_url('admin/') : ($id_role == 2 ? base_url('user/') : ($id_role == 3 ? base_url('umum/') : ($id_role == 4 ? base_url('developer/') : '#')))) . $sm['url'] ?>" class='sidebar-link'>
+                                    <i class="<?= $sm['icon']; ?>"></i>
+                                    <span><?= $sm['title']; ?></span>
+                                </a>
+                            </li>
+                        <?php elseif ($sm['has_sub'] == 1) : ?>
+                            <li class="<?= $title == $sm['title'] ? 'sidebar-item has-sub active' : 'sidebar-item has-sub' ?>">
+                                <a href="#" class='sidebar-link'>
+                                    <i class="<?= $sm['icon']; ?>"></i>
+                                    <span><?= $sm['title']; ?></span>
+                                </a>
+                                <?php
+                                $id_sub_menu = $sm['id_sub_menu'];
+                                $queryHasSub = "SELECT * FROM has_sub_menu
                                                     WHERE id_sub_menu=$id_sub_menu
                                                 ";
-                                    $HasSub = $this->db->query($queryHasSub)->result_array();
-                                    ?>
-                                    <?php if ($title == $sm['title']) : ?>
-                                        <ul class="submenu active">
-                                        <?php else : ?>
-                                            <ul class="submenu">
-                                            <?php endif; ?>
-                                            <?php foreach ($HasSub as $hs) : ?>
-                                                <li class="submenu-item">
-                                                    <?php if ($id_role == 1) : ?>
-                                                        <a href="<?= base_url() ?>admin/<?= $hs['url_has_sub']; ?>">
-                                                        <?php elseif ($id_role == 2) : ?>
-                                                            <a href="<?= base_url() ?>user/<?= $hs['url_has_sub']; ?>">
-                                                            <?php elseif ($id_role == 3) : ?>
-                                                                <a href="<?= base_url() ?>umum/<?= $hs['url_has_sub']; ?>">
-                                                                <?php elseif ($id_role == 4) : ?>
-                                                                    <a href="<?= base_url() ?>developer/<?= $hs['url_has_sub']; ?>">
-                                                                    <?php endif; ?>
-                                                                    <i class="<?= $hs['icon_has_sub']; ?>"></i>
-                                                                    <span><?= $hs['title_has_sub']; ?></span>
-                                                                    </a>
-                                                </li>
-                                            <?php endforeach; ?>
-                                            </ul>
-                                    </li>
-                                <?php endif; ?>
-                            <?php endforeach ?>
+                                $HasSub = $this->db->query($queryHasSub)->result_array();
+                                ?>
+                                <ul class="<?= $title == $sm['title'] ? 'submenu active' : 'submenu' ?>">
+                                    <?php foreach ($HasSub as $hs) : ?>
+                                        <?php $submenu_title = $hs['title_has_sub']; ?>
+                                        <li class="<?= isset($has_sub) ? ($has_sub == $submenu_title ? 'submenu-item active' : 'submenu-item') : 'submenu-item' ?>">
+                                            <a href="<?= ($id_role == 1 ? base_url('admin/') : ($id_role == 2 ? base_url('user/') : ($id_role == 3 ? base_url('umum/') : ($id_role == 4 ? base_url('developer/') : '#')))) . $hs['url_has_sub'] ?>">
+                                                <i class="<?= $hs['icon_has_sub']; ?>"></i>
+                                                <span><?= $hs['title_has_sub']; ?></span>
+                                            </a>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </li>
+                        <?php endif; ?>
+                    <?php endforeach ?>
                 </ul>
             </div>
         <?php endforeach; ?>
